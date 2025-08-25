@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  password  String?
+  name      String?
+  avatar    String?
+  createdAt DateTime  @default(now())
+  progress  Progress[]
+  orders    Order[]
+}
+
+model Course {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  avatar      String?
+  description String
+  price       Int      // in cents
+  lessons     Lesson[]
+  createdAt   DateTime @default(now())
+  orders      Order[]
+}
+
+model Lesson {
+  id        String   @id @default(cuid())
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  String
+  title     String
+  order     Int
+  avatar    String?
+  videoUrl  String?  // Cloudinary URL if video
+  quiz      Quiz?
+  progress  Progress[]
+}
+
+model Quiz {
+  id       String @id @default(cuid())
+  lesson   Lesson @relation(fields: [lessonId], references: [id])
+  lessonId String @unique
+  questions Json
+  avatar   String?
+}
+
+model Progress {
+  id         String   @id @default(cuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  lesson     Lesson   @relation(fields: [lessonId], references: [id])
+  lessonId   String
+  completed  Boolean  @default(false)
+  score      Int?
+  updatedAt  DateTime @updatedAt
+
+  @@unique([userId, lessonId])
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  email     String
+  createdAt DateTime @default(now())
+}
+
+model Order {
+  id        String   @id @default(cuid())
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  String
+  amount    Int
+  status    String   // "pending"|"paid"|"failed"
+  createdAt DateTime @default(now())
+}
+
+model Traffic {
+  id    String @id @default(cuid())
+  count Int    @default(0)
+  updatedAt DateTime @updatedAt
+}
