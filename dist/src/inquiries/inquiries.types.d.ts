@@ -4,5 +4,6 @@ export declare class Inquiry {
     email: string;
     subject: string;
     message: string;
+    status: string;
     createdAt: Date;
 }

@@ -16,6 +16,7 @@ exports.CoursesResolver = void 0;
 const graphql_1 = require("@nestjs/graphql");
 const prisma_service_1 = require("../prisma/prisma.service");
 const courses_types_1 = require("./courses.types");
+const graphql_2 = require("@nestjs/graphql");
 let CoursesResolver = class CoursesResolver {
     constructor(prisma) {
         this.prisma = prisma;
@@ -25,7 +26,11 @@ let CoursesResolver = class CoursesResolver {
             include: {
                 lessons: {
                     orderBy: { order: 'asc' }
-                }
+                },
+                quizzes: {
+                    orderBy: { order: 'asc' }
+                },
+                createdBy: true,
             }
         });
     }
@@ -35,8 +40,28 @@ let CoursesResolver = class CoursesResolver {
             include: {
                 lessons: {
                     orderBy: { order: 'asc' }
-                }
+                },
+                quizzes: {
+                    orderBy: { order: 'asc' }
+                },
+                createdBy: true,
             }
+        });
+    }
+    async createCourse(title, description, price, slug, avatar, createdById) {
+        const exists = await this.prisma.course.findUnique({ where: { slug } });
+        if (exists) {
+            throw new Error('Slug already exists');
+        }
+        return this.prisma.course.create({
+            data: {
+                title,
+                description,
+                price,
+                slug,
+                avatar,
+                createdById,
+            },
         });
     }
     async lessons(course) {
@@ -60,6 +85,18 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], CoursesResolver.prototype, "course", null);
+__decorate([
+    (0, graphql_1.Mutation)(() => courses_types_1.Course),
+    __param(0, (0, graphql_1.Args)('title')),
+    __param(1, (0, graphql_1.Args)('description')),
+    __param(2, (0, graphql_1.Args)('price', { type: () => graphql_2.Int })),
+    __param(3, (0, graphql_1.Args)('slug')),
+    __param(4, (0, graphql_1.Args)('avatar', { nullable: true })),
+    __param(5, (0, graphql_1.Args)('createdById', { nullable: true })),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, Number, String, String, String]),
+    __metadata("design:returntype", Promise)
+], CoursesResolver.prototype, "createCourse", null);
 __decorate([
     (0, graphql_1.ResolveField)(() => [courses_types_1.Lesson]),
     __param(0, (0, graphql_1.Parent)()),

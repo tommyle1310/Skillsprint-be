@@ -20,20 +20,38 @@ let InquiriesResolver = class InquiriesResolver {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async inquiries() {
-        return this.prisma.inquiry.findMany({ orderBy: { createdAt: 'desc' } });
+    async inquiries(skip = 0, take = 10) {
+        return this.prisma.inquiry.findMany({
+            skip,
+            take,
+            orderBy: { createdAt: 'desc' },
+        });
+    }
+    async inquiriesCount() {
+        return this.prisma.inquiry.count();
     }
     async createInquiry(name, email, subject, message) {
-        return this.prisma.inquiry.create({ data: { name, email, subject, message } });
+        return this.prisma.inquiry.create({ data: { name, email, subject, message, status: 'OPEN' } });
+    }
+    async updateInquiryStatus(id, status) {
+        return this.prisma.inquiry.update({ where: { id }, data: { status } });
     }
 };
 exports.InquiriesResolver = InquiriesResolver;
 __decorate([
     (0, graphql_1.Query)(() => [inquiries_types_1.Inquiry]),
+    __param(0, (0, graphql_1.Args)('skip', { type: () => graphql_1.Int, nullable: true })),
+    __param(1, (0, graphql_1.Args)('take', { type: () => graphql_1.Int, nullable: true })),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], InquiriesResolver.prototype, "inquiries", null);
+__decorate([
+    (0, graphql_1.Query)(() => graphql_1.Int),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
-], InquiriesResolver.prototype, "inquiries", null);
+], InquiriesResolver.prototype, "inquiriesCount", null);
 __decorate([
     (0, graphql_1.Mutation)(() => inquiries_types_1.Inquiry),
     __param(0, (0, graphql_1.Args)('name')),
@@ -44,6 +62,14 @@ __decorate([
     __metadata("design:paramtypes", [String, String, String, String]),
     __metadata("design:returntype", Promise)
 ], InquiriesResolver.prototype, "createInquiry", null);
+__decorate([
+    (0, graphql_1.Mutation)(() => inquiries_types_1.Inquiry),
+    __param(0, (0, graphql_1.Args)('id')),
+    __param(1, (0, graphql_1.Args)('status')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], InquiriesResolver.prototype, "updateInquiryStatus", null);
 exports.InquiriesResolver = InquiriesResolver = __decorate([
     (0, graphql_1.Resolver)(() => inquiries_types_1.Inquiry),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService])

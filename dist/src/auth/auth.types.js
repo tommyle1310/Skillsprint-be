@@ -31,6 +31,10 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "avatar", void 0);
 __decorate([
+    (0, graphql_1.Field)({ nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "role", void 0);
+__decorate([
     (0, graphql_1.Field)(),
     __metadata("design:type", Date)
 ], User.prototype, "createdAt", void 0);

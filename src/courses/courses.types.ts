@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
 
 @ObjectType()
 export class Course {
@@ -17,14 +17,20 @@ export class Course {
   @Field()
   description: string;
 
-  @Field()
+  @Field(() => Int)
   price: number;
 
   @Field()
   createdAt: Date;
 
+  @Field({ nullable: true })
+  createdById?: string;
+
   @Field(() => [Lesson], { nullable: true })
   lessons?: Lesson[];
+
+  @Field(() => [Quiz], { nullable: true })
+  quizzes?: Quiz[];
 }
 
 @ObjectType()
@@ -35,7 +41,7 @@ export class Lesson {
   @Field()
   title: string;
 
-  @Field()
+  @Field(() => Int)
   order: number;
 
   @Field({ nullable: true })
@@ -43,6 +49,27 @@ export class Lesson {
 
   @Field({ nullable: true })
   videoUrl?: string;
+
+  @Field(() => Course)
+  course: Course;
+
+  @Field()
+  courseId: string;
+}
+
+@ObjectType()
+export class Quiz {
+  @Field(() => ID)
+  id: string;
+
+  @Field()
+  title: string;
+
+  @Field(() => Int)
+  order: number;
+
+  @Field({ nullable: true })
+  avatar?: string;
 
   @Field(() => Course)
   course: Course;

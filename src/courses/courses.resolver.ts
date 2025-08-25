@@ -1,6 +1,7 @@
-import { Resolver, Query, Args, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Args, ResolveField, Parent, Mutation } from '@nestjs/graphql';
 import { PrismaService } from '../prisma/prisma.service';
 import { Course, Lesson } from './courses.types';
+import { Int } from '@nestjs/graphql';
 
 @Resolver(() => Course)
 export class CoursesResolver {
@@ -12,7 +13,11 @@ export class CoursesResolver {
       include: {
         lessons: {
           orderBy: { order: 'asc' }
-        }
+        },
+        quizzes: {
+          orderBy: { order: 'asc' }
+        },
+        createdBy: true,
       }
     });
   }
@@ -24,8 +29,38 @@ export class CoursesResolver {
       include: {
         lessons: {
           orderBy: { order: 'asc' }
-        }
+        },
+        quizzes: {
+          orderBy: { order: 'asc' }
+        },
+        createdBy: true,
       }
+    });
+  }
+
+  @Mutation(() => Course)
+  async createCourse(
+    @Args('title') title: string,
+    @Args('description') description: string,
+    @Args('price', { type: () => Int }) price: number,
+    @Args('slug') slug: string,
+    @Args('avatar', { nullable: true }) avatar?: string,
+    @Args('createdById', { nullable: true }) createdById?: string,
+  ) {
+    // Ensure unique slug
+    const exists = await this.prisma.course.findUnique({ where: { slug } });
+    if (exists) {
+      throw new Error('Slug already exists');
+    }
+    return this.prisma.course.create({
+      data: {
+        title,
+        description,
+        price,
+        slug,
+        avatar,
+        createdById,
+      },
     });
   }
 

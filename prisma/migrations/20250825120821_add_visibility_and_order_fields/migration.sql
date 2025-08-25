@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "Lesson" ADD COLUMN     "visible" BOOLEAN NOT NULL DEFAULT true;
+
+-- AlterTable
+ALTER TABLE "Quiz" ADD COLUMN     "order" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "visible" BOOLEAN NOT NULL DEFAULT true;

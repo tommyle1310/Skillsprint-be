@@ -6,7 +6,9 @@ export declare class Course {
     description: string;
     price: number;
     createdAt: Date;
+    createdById?: string;
     lessons?: Lesson[];
+    quizzes?: Quiz[];
 }
 export declare class Lesson {
     id: string;
@@ -14,6 +16,14 @@ export declare class Lesson {
     order: number;
     avatar?: string;
     videoUrl?: string;
+    course: Course;
+    courseId: string;
+}
+export declare class Quiz {
+    id: string;
+    title: string;
+    order: number;
+    avatar?: string;
     course: Course;
     courseId: string;
 }

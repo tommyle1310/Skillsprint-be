@@ -18,5 +18,8 @@ export class Inquiry {
   message: string;
 
   @Field()
+  status: string;
+
+  @Field()
   createdAt: Date;
 }

@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Lesson = exports.Course = void 0;
+exports.Quiz = exports.Lesson = exports.Course = void 0;
 const graphql_1 = require("@nestjs/graphql");
 let Course = class Course {
 };
@@ -35,7 +35,7 @@ __decorate([
     __metadata("design:type", String)
 ], Course.prototype, "description", void 0);
 __decorate([
-    (0, graphql_1.Field)(),
+    (0, graphql_1.Field)(() => graphql_1.Int),
     __metadata("design:type", Number)
 ], Course.prototype, "price", void 0);
 __decorate([
@@ -43,9 +43,17 @@ __decorate([
     __metadata("design:type", Date)
 ], Course.prototype, "createdAt", void 0);
 __decorate([
+    (0, graphql_1.Field)({ nullable: true }),
+    __metadata("design:type", String)
+], Course.prototype, "createdById", void 0);
+__decorate([
     (0, graphql_1.Field)(() => [Lesson], { nullable: true }),
     __metadata("design:type", Array)
 ], Course.prototype, "lessons", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => [Quiz], { nullable: true }),
+    __metadata("design:type", Array)
+], Course.prototype, "quizzes", void 0);
 exports.Course = Course = __decorate([
     (0, graphql_1.ObjectType)()
 ], Course);
@@ -61,7 +69,7 @@ __decorate([
     __metadata("design:type", String)
 ], Lesson.prototype, "title", void 0);
 __decorate([
-    (0, graphql_1.Field)(),
+    (0, graphql_1.Field)(() => graphql_1.Int),
     __metadata("design:type", Number)
 ], Lesson.prototype, "order", void 0);
 __decorate([
@@ -83,4 +91,34 @@ __decorate([
 exports.Lesson = Lesson = __decorate([
     (0, graphql_1.ObjectType)()
 ], Lesson);
+let Quiz = class Quiz {
+};
+exports.Quiz = Quiz;
+__decorate([
+    (0, graphql_1.Field)(() => graphql_1.ID),
+    __metadata("design:type", String)
+], Quiz.prototype, "id", void 0);
+__decorate([
+    (0, graphql_1.Field)(),
+    __metadata("design:type", String)
+], Quiz.prototype, "title", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => graphql_1.Int),
+    __metadata("design:type", Number)
+], Quiz.prototype, "order", void 0);
+__decorate([
+    (0, graphql_1.Field)({ nullable: true }),
+    __metadata("design:type", String)
+], Quiz.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => Course),
+    __metadata("design:type", Course)
+], Quiz.prototype, "course", void 0);
+__decorate([
+    (0, graphql_1.Field)(),
+    __metadata("design:type", String)
+], Quiz.prototype, "courseId", void 0);
+exports.Quiz = Quiz = __decorate([
+    (0, graphql_1.ObjectType)()
+], Quiz);
 //# sourceMappingURL=courses.types.js.map

@@ -10,6 +10,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+  LEAD
+  TEACHER
+}
+
 model Account {
   id                 String  @id @default(cuid())
   userId             String
@@ -53,12 +60,14 @@ model User {
   name          String?
   image         String?
   avatar        String?
+  role          Role      @default(USER)
   createdAt     DateTime  @default(now())
   progress      Progress[]
   orders        Order[]
   reviews       Review[]
   accounts      Account[]
   sessions      Session[]
+  createdCourses Course[]  @relation("CourseCreatedBy")
 }
 
 model Course {
@@ -77,6 +86,8 @@ model Course {
   promotions      Promotion[]
   createdAt       DateTime    @default(now())
   orders          Order[]
+  createdBy       User?       @relation("CourseCreatedBy", fields: [createdById], references: [id])
+  createdById     String?
 }
 
 model Lesson {
@@ -87,6 +98,7 @@ model Lesson {
   order     Int
   avatar    String?
   videoUrl  String?  // Cloudinary URL if video
+  visible   Boolean  @default(true)
   progress  Progress[]
 }
 
@@ -97,6 +109,8 @@ model Quiz {
   title     String
   questions Json
   avatar    String?
+  order     Int      @default(0)
+  visible   Boolean  @default(true)
 }
 
 model Review {
@@ -146,6 +160,7 @@ model Inquiry {
   email     String
   subject   String
   message   String
+  status    String   @default("OPEN")
   createdAt DateTime @default(now())
 }
 

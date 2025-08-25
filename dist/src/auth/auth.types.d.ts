@@ -3,6 +3,7 @@ export declare class User {
     email: string;
     name?: string;
     avatar?: string;
+    role?: string;
     createdAt: Date;
 }
 export declare class AuthPayload {

@@ -11,6 +11,7 @@ export declare class AuthService {
         name: string | null;
         image: string | null;
         avatar: string | null;
+        role: import(".prisma/client").$Enums.Role;
         createdAt: Date;
     }>;
     login(user: any): Promise<{
@@ -20,6 +21,7 @@ export declare class AuthService {
             email: any;
             name: any;
             avatar: any;
+            role: any;
             createdAt: any;
         };
     }>;
@@ -30,6 +32,7 @@ export declare class AuthService {
             email: any;
             name: any;
             avatar: any;
+            role: any;
             createdAt: any;
         };
     }>;

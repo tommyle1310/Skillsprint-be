@@ -36,6 +36,10 @@ __decorate([
 ], Inquiry.prototype, "message", void 0);
 __decorate([
     (0, graphql_1.Field)(),
+    __metadata("design:type", String)
+], Inquiry.prototype, "status", void 0);
+__decorate([
+    (0, graphql_1.Field)(),
     __metadata("design:type", Date)
 ], Inquiry.prototype, "createdAt", void 0);
 exports.Inquiry = Inquiry = __decorate([
