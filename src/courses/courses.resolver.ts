@@ -44,9 +44,10 @@ export class CoursesResolver {
     @Args('description') description: string,
     @Args('price', { type: () => Int }) price: number,
     @Args('slug') slug: string,
+    @Args('createdById') createdById: string,
     @Args('avatar', { nullable: true }) avatar?: string,
-    @Args('createdById', { nullable: true }) createdById?: string,
   ) {
+    console.log('cehckec create by id', createdById)
     // Ensure unique slug
     const exists = await this.prisma.course.findUnique({ where: { slug } });
     if (exists) {
@@ -59,7 +60,7 @@ export class CoursesResolver {
         price,
         slug,
         avatar,
-        createdById,
+        createdBy: { connect: { id: createdById } },
       },
     });
   }

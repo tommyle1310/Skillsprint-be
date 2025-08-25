@@ -7,26 +7,26 @@ export declare class CoursesResolver {
         lessons: {
             id: string;
             title: string;
-            order: number;
             avatar: string | null;
+            order: number;
+            courseId: string;
             videoUrl: string | null;
             visible: boolean;
-            courseId: string;
         }[];
         quizzes: {
             id: string;
             title: string;
-            order: number;
             avatar: string | null;
-            visible: boolean;
+            order: number;
             courseId: string;
+            visible: boolean;
             questions: import("@prisma/client/runtime/library").JsonValue;
         }[];
         createdBy: {
             id: string;
             avatar: string | null;
-            name: string | null;
             createdAt: Date;
+            name: string | null;
             email: string;
             emailVerified: Date | null;
             password: string | null;
@@ -36,8 +36,8 @@ export declare class CoursesResolver {
     } & {
         id: string;
         title: string;
-        avatar: string | null;
         slug: string;
+        avatar: string | null;
         description: string;
         price: number;
         categories: string[];
@@ -50,26 +50,26 @@ export declare class CoursesResolver {
         lessons: {
             id: string;
             title: string;
-            order: number;
             avatar: string | null;
+            order: number;
+            courseId: string;
             videoUrl: string | null;
             visible: boolean;
-            courseId: string;
         }[];
         quizzes: {
             id: string;
             title: string;
-            order: number;
             avatar: string | null;
-            visible: boolean;
+            order: number;
             courseId: string;
+            visible: boolean;
             questions: import("@prisma/client/runtime/library").JsonValue;
         }[];
         createdBy: {
             id: string;
             avatar: string | null;
-            name: string | null;
             createdAt: Date;
+            name: string | null;
             email: string;
             emailVerified: Date | null;
             password: string | null;
@@ -79,8 +79,8 @@ export declare class CoursesResolver {
     } & {
         id: string;
         title: string;
-        avatar: string | null;
         slug: string;
+        avatar: string | null;
         description: string;
         price: number;
         categories: string[];
@@ -89,11 +89,11 @@ export declare class CoursesResolver {
         createdAt: Date;
         createdById: string | null;
     }>;
-    createCourse(title: string, description: string, price: number, slug: string, avatar?: string, createdById?: string): Promise<{
+    createCourse(title: string, description: string, price: number, slug: string, createdById: string, avatar?: string): Promise<{
         id: string;
         title: string;
-        avatar: string | null;
         slug: string;
+        avatar: string | null;
         description: string;
         price: number;
         categories: string[];
@@ -105,10 +105,10 @@ export declare class CoursesResolver {
     lessons(course: Course): Promise<{
         id: string;
         title: string;
-        order: number;
         avatar: string | null;
+        order: number;
+        courseId: string;
         videoUrl: string | null;
         visible: boolean;
-        courseId: string;
     }[]>;
 }

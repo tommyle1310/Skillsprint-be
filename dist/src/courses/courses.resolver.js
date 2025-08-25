@@ -48,7 +48,8 @@ let CoursesResolver = class CoursesResolver {
             }
         });
     }
-    async createCourse(title, description, price, slug, avatar, createdById) {
+    async createCourse(title, description, price, slug, createdById, avatar) {
+        console.log('cehckec create by id', createdById);
         const exists = await this.prisma.course.findUnique({ where: { slug } });
         if (exists) {
             throw new Error('Slug already exists');
@@ -60,7 +61,7 @@ let CoursesResolver = class CoursesResolver {
                 price,
                 slug,
                 avatar,
-                createdById,
+                createdBy: { connect: { id: createdById } },
             },
         });
     }
@@ -91,8 +92,8 @@ __decorate([
     __param(1, (0, graphql_1.Args)('description')),
     __param(2, (0, graphql_1.Args)('price', { type: () => graphql_2.Int })),
     __param(3, (0, graphql_1.Args)('slug')),
-    __param(4, (0, graphql_1.Args)('avatar', { nullable: true })),
-    __param(5, (0, graphql_1.Args)('createdById', { nullable: true })),
+    __param(4, (0, graphql_1.Args)('createdById')),
+    __param(5, (0, graphql_1.Args)('avatar', { nullable: true })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String, Number, String, String, String]),
     __metadata("design:returntype", Promise)
