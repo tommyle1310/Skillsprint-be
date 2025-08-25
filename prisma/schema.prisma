@@ -10,54 +10,122 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
 model User {
-  id        String    @id @default(cuid())
-  email     String    @unique
-  password  String?
-  name      String?
-  avatar    String?
-  createdAt DateTime  @default(now())
-  progress  Progress[]
-  orders    Order[]
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  password      String?
+  name          String?
+  image         String?
+  avatar        String?
+  createdAt     DateTime  @default(now())
+  progress      Progress[]
+  orders        Order[]
+  reviews       Review[]
+  accounts      Account[]
+  sessions      Session[]
 }
 
 model Course {
-  id          String   @id @default(cuid())
-  title       String
-  slug        String   @unique
-  avatar      String?
-  description String
-  price       Int      // in cents
-  lessons     Lesson[]
-  createdAt   DateTime @default(now())
-  orders      Order[]
+  id              String      @id @default(cuid())
+  title           String
+  slug            String      @unique
+  avatar          String?
+  description     String
+  price           Int         // in cents
+  categories      String[]    @default([])
+  purchaseCount   Int         @default(0)
+  rating          Float       @default(0)
+  lessons         Lesson[]
+  quizzes         Quiz[]
+  reviews         Review[]
+  promotions      Promotion[]
+  createdAt       DateTime    @default(now())
+  orders          Order[]
 }
 
 model Lesson {
   id        String   @id @default(cuid())
-  course    Course   @relation(fields: [courseId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   courseId  String
   title     String
   order     Int
   avatar    String?
   videoUrl  String?  // Cloudinary URL if video
-  quiz      Quiz?
   progress  Progress[]
 }
 
 model Quiz {
-  id       String @id @default(cuid())
-  lesson   Lesson @relation(fields: [lessonId], references: [id])
-  lessonId String @unique
+  id        String   @id @default(cuid())
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId  String
+  title     String
   questions Json
-  avatar   String?
+  avatar    String?
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId  String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+
+  @@unique([userId, courseId])
+}
+
+model Promotion {
+  id                 String   @id @default(cuid())
+  code               String   @unique
+  discountPercentage Int
+  expiresAt          DateTime
+  course             Course?  @relation(fields: [courseId], references: [id])
+  courseId           String?  @unique
 }
 
 model Progress {
   id         String   @id @default(cuid())
   user       User     @relation(fields: [userId], references: [id])
   userId     String
-  lesson     Lesson   @relation(fields: [lessonId], references: [id])
+  lesson     Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   lessonId   String
   completed  Boolean  @default(false)
   score      Int?
@@ -69,6 +137,15 @@ model Progress {
 model Lead {
   id        String   @id @default(cuid())
   email     String
+  createdAt DateTime @default(now())
+}
+
+model Inquiry {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
   createdAt DateTime @default(now())
 }
 
@@ -84,7 +161,7 @@ model Order {
 }
 
 model Traffic {
-  id    String @id @default(cuid())
-  count Int    @default(0)
+  id        String   @id @default(cuid())
+  count     Int      @default(0)
   updatedAt DateTime @updatedAt
 }

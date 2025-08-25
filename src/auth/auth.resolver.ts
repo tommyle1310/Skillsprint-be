@@ -12,6 +12,7 @@ export class AuthResolver {
     @Args('password') password: string,
   ): Promise<AuthPayload> {
     const user = await this.authService.validateUser(email, password);
+    console.log('cehck user', email, password)
     if (!user) {
       throw new Error('Invalid credentials');
     }

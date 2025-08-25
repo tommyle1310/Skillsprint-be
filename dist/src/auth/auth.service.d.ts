@@ -7,7 +7,9 @@ export declare class AuthService {
     validateUser(email: string, password: string): Promise<{
         id: string;
         email: string;
+        emailVerified: Date | null;
         name: string | null;
+        image: string | null;
         avatar: string | null;
         createdAt: Date;
     }>;

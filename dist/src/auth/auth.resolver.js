@@ -22,6 +22,7 @@ let AuthResolver = class AuthResolver {
     }
     async login(email, password) {
         const user = await this.authService.validateUser(email, password);
+        console.log('cehck user', email, password);
         if (!user) {
             throw new Error('Invalid credentials');
         }

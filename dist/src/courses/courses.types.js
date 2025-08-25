@@ -40,10 +40,6 @@ __decorate([
 ], Course.prototype, "price", void 0);
 __decorate([
     (0, graphql_1.Field)(),
-    __metadata("design:type", String)
-], Course.prototype, "type", void 0);
-__decorate([
-    (0, graphql_1.Field)(),
     __metadata("design:type", Date)
 ], Course.prototype, "createdAt", void 0);
 __decorate([

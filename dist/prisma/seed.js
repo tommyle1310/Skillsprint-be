@@ -34,7 +34,6 @@ async function main() {
             slug: 'web-development-bootcamp',
             description: 'Learn HTML, CSS, JavaScript, and React from scratch. Build real-world projects and become a full-stack developer.',
             price: 9900,
-            type: 'video',
             avatar: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=300&fit=crop'
         }
     });
@@ -44,7 +43,6 @@ async function main() {
             slug: 'javascript-fundamentals',
             description: 'Test your JavaScript knowledge with interactive quizzes. Perfect for beginners and intermediate developers.',
             price: 4900,
-            type: 'quiz',
             avatar: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=300&fit=crop'
         }
     });
@@ -93,17 +91,10 @@ async function main() {
             avatar: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&h=200&fit=crop'
         }
     });
-    const lesson1B = await prisma.lesson.create({
+    const quiz1B = await prisma.quiz.create({
         data: {
             courseId: courseB.id,
             title: 'Variables and Data Types',
-            order: 1,
-            avatar: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=300&h=200&fit=crop'
-        }
-    });
-    const quiz1B = await prisma.quiz.create({
-        data: {
-            lessonId: lesson1B.id,
             questions: [
                 {
                     question: 'Which keyword is used to declare a variable in JavaScript?',
@@ -123,17 +114,10 @@ async function main() {
             ]
         }
     });
-    const lesson2B = await prisma.lesson.create({
+    const quiz2B = await prisma.quiz.create({
         data: {
             courseId: courseB.id,
             title: 'Functions and Scope',
-            order: 2,
-            avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop'
-        }
-    });
-    const quiz2B = await prisma.quiz.create({
-        data: {
-            lessonId: lesson2B.id,
             questions: [
                 {
                     question: 'What is a function declaration?',
@@ -153,17 +137,10 @@ async function main() {
             ]
         }
     });
-    const lesson3B = await prisma.lesson.create({
+    const quiz3B = await prisma.quiz.create({
         data: {
             courseId: courseB.id,
             title: 'Arrays and Objects',
-            order: 3,
-            avatar: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=300&h=200&fit=crop'
-        }
-    });
-    const quiz3B = await prisma.quiz.create({
-        data: {
-            lessonId: lesson3B.id,
             questions: [
                 {
                     question: 'How do you access the first element of an array?',
@@ -183,17 +160,10 @@ async function main() {
             ]
         }
     });
-    const lesson4B = await prisma.lesson.create({
+    const quiz4B = await prisma.quiz.create({
         data: {
             courseId: courseB.id,
             title: 'DOM Manipulation',
-            order: 4,
-            avatar: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=300&h=200&fit=crop'
-        }
-    });
-    const quiz4B = await prisma.quiz.create({
-        data: {
-            lessonId: lesson4B.id,
             questions: [
                 {
                     question: 'What does DOM stand for?',
@@ -213,17 +183,10 @@ async function main() {
             ]
         }
     });
-    const lesson5B = await prisma.lesson.create({
+    const quiz5B = await prisma.quiz.create({
         data: {
             courseId: courseB.id,
             title: 'Final Assessment',
-            order: 5,
-            avatar: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&h=200&fit=crop'
-        }
-    });
-    const quiz5B = await prisma.quiz.create({
-        data: {
-            lessonId: lesson5B.id,
             questions: [
                 {
                     question: 'What is the result of 2 + "2" in JavaScript?',

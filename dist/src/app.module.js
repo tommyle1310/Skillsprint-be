@@ -21,6 +21,7 @@ const progress_module_1 = require("./progress/progress.module");
 const leads_module_1 = require("./leads/leads.module");
 const orders_module_1 = require("./orders/orders.module");
 const analytics_module_1 = require("./analytics/analytics.module");
+const inquiries_module_1 = require("./inquiries/inquiries.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -47,6 +48,7 @@ exports.AppModule = AppModule = __decorate([
             leads_module_1.LeadsModule,
             orders_module_1.OrdersModule,
             analytics_module_1.AnalyticsModule,
+            inquiries_module_1.InquiriesModule,
         ],
     })
 ], AppModule);

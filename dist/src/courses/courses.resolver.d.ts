@@ -20,7 +20,9 @@ export declare class CoursesResolver {
         slug: string;
         description: string;
         price: number;
-        type: string;
+        categories: string[];
+        purchaseCount: number;
+        rating: number;
     })[]>;
     course(slug: string): Promise<{
         lessons: {
@@ -39,7 +41,9 @@ export declare class CoursesResolver {
         slug: string;
         description: string;
         price: number;
-        type: string;
+        categories: string[];
+        purchaseCount: number;
+        rating: number;
     }>;
     lessons(course: Course): Promise<{
         id: string;

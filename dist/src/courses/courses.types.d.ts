@@ -5,7 +5,6 @@ export declare class Course {
     avatar?: string;
     description: string;
     price: number;
-    type: string;
     createdAt: Date;
     lessons?: Lesson[];
 }

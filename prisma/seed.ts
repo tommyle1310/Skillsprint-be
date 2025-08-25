@@ -34,26 +34,24 @@ async function main() {
     }
   });
 
-  // Create Course A: Video Course
+  // Create Course A
   const courseA = await prisma.course.create({
     data: {
       title: 'Complete Web Development Bootcamp',
       slug: 'web-development-bootcamp',
       description: 'Learn HTML, CSS, JavaScript, and React from scratch. Build real-world projects and become a full-stack developer.',
       price: 9900, // $99.00
-      type: 'video',
       avatar: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=300&fit=crop'
     }
   });
 
-  // Create Course B: Quiz Course
+  // Create Course B
   const courseB = await prisma.course.create({
     data: {
       title: 'JavaScript Fundamentals Quiz',
       slug: 'javascript-fundamentals',
       description: 'Test your JavaScript knowledge with interactive quizzes. Perfect for beginners and intermediate developers.',
       price: 4900, // $49.00
-      type: 'quiz',
       avatar: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=300&fit=crop'
     }
   });
@@ -109,19 +107,11 @@ async function main() {
     }
   });
 
-  // Create lessons for Course B (Quiz Course)
-  const lesson1B = await prisma.lesson.create({
+  // Create quizzes for Course B (now belong to Course)
+  const quiz1B = await prisma.quiz.create({
     data: {
       courseId: courseB.id,
       title: 'Variables and Data Types',
-      order: 1,
-      avatar: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=300&h=200&fit=crop'
-    }
-  });
-
-  const quiz1B = await prisma.quiz.create({
-    data: {
-      lessonId: lesson1B.id,
       questions: [
         {
           question: 'Which keyword is used to declare a variable in JavaScript?',
@@ -138,22 +128,14 @@ async function main() {
           options: ['array', 'object', 'string', 'function'],
           correctAnswer: 2
         }
-      ]
-    }
-  });
-
-  const lesson2B = await prisma.lesson.create({
-    data: {
-      courseId: courseB.id,
-      title: 'Functions and Scope',
-      order: 2,
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop'
+      ] as unknown as any
     }
   });
 
   const quiz2B = await prisma.quiz.create({
     data: {
-      lessonId: lesson2B.id,
+      courseId: courseB.id,
+      title: 'Functions and Scope',
       questions: [
         {
           question: 'What is a function declaration?',
@@ -170,22 +152,14 @@ async function main() {
           options: ['myFunction()', 'call myFunction', 'function myFunction', 'myFunction.call()'],
           correctAnswer: 0
         }
-      ]
-    }
-  });
-
-  const lesson3B = await prisma.lesson.create({
-    data: {
-      courseId: courseB.id,
-      title: 'Arrays and Objects',
-      order: 3,
-      avatar: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=300&h=200&fit=crop'
+      ] as unknown as any
     }
   });
 
   const quiz3B = await prisma.quiz.create({
     data: {
-      lessonId: lesson3B.id,
+      courseId: courseB.id,
+      title: 'Arrays and Objects',
       questions: [
         {
           question: 'How do you access the first element of an array?',
@@ -202,22 +176,14 @@ async function main() {
           options: ['object.property', 'object[property]', 'Both A and B', 'object.get(property)'],
           correctAnswer: 2
         }
-      ]
-    }
-  });
-
-  const lesson4B = await prisma.lesson.create({
-    data: {
-      courseId: courseB.id,
-      title: 'DOM Manipulation',
-      order: 4,
-      avatar: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=300&h=200&fit=crop'
+      ] as unknown as any
     }
   });
 
   const quiz4B = await prisma.quiz.create({
     data: {
-      lessonId: lesson4B.id,
+      courseId: courseB.id,
+      title: 'DOM Manipulation',
       questions: [
         {
           question: 'What does DOM stand for?',
@@ -234,22 +200,14 @@ async function main() {
           options: ['createElement()', 'newElement()', 'addElement()', 'makeElement()'],
           correctAnswer: 0
         }
-      ]
-    }
-  });
-
-  const lesson5B = await prisma.lesson.create({
-    data: {
-      courseId: courseB.id,
-      title: 'Final Assessment',
-      order: 5,
-      avatar: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&h=200&fit=crop'
+      ] as unknown as any
     }
   });
 
   const quiz5B = await prisma.quiz.create({
     data: {
-      lessonId: lesson5B.id,
+      courseId: courseB.id,
+      title: 'Final Assessment',
       questions: [
         {
           question: 'What is the result of 2 + "2" in JavaScript?',
@@ -266,7 +224,7 @@ async function main() {
           options: ['To enable strict mode', 'To disable strict mode', 'To import modules', 'To export functions'],
           correctAnswer: 0
         }
-      ]
+      ] as unknown as any
     }
   });
 
