@@ -38,7 +38,7 @@ yarn-error.log*
 
 # keys
 keys/*
-
+keys/ga-service.json
 # typescript
 *.tsbuildinfo
 next-env.d.ts
