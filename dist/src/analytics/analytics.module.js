@@ -9,12 +9,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnalyticsModule = void 0;
 const common_1 = require("@nestjs/common");
 const analytics_resolver_1 = require("./analytics.resolver");
+const google_analytics_service_1 = require("./google-analytics.service");
 let AnalyticsModule = class AnalyticsModule {
 };
 exports.AnalyticsModule = AnalyticsModule;
 exports.AnalyticsModule = AnalyticsModule = __decorate([
     (0, common_1.Module)({
-        providers: [analytics_resolver_1.AnalyticsResolver],
+        providers: [analytics_resolver_1.AnalyticsResolver, google_analytics_service_1.GoogleAnalyticsService],
     })
 ], AnalyticsModule);
 //# sourceMappingURL=analytics.module.js.map

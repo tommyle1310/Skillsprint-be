@@ -4,18 +4,18 @@ export declare class LessonsResolver {
     constructor(prisma: PrismaService);
     createLesson(courseId: string, title: string, order?: number, videoUrl?: string, avatar?: string): Promise<{
         id: string;
+        avatar: string | null;
         title: string;
         order: number;
-        avatar: string | null;
         videoUrl: string | null;
         visible: boolean;
         courseId: string;
     }>;
     updateLesson(id: string, title?: string, order?: number, videoUrl?: string, avatar?: string, visible?: boolean): Promise<{
         id: string;
+        avatar: string | null;
         title: string;
         order: number;
-        avatar: string | null;
         videoUrl: string | null;
         visible: boolean;
         courseId: string;

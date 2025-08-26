@@ -42,6 +42,10 @@ __decorate([
     (0, graphql_2.Field)(),
     __metadata("design:type", Date)
 ], GqlUser.prototype, "createdAt", void 0);
+__decorate([
+    (0, graphql_2.Field)({ nullable: true }),
+    __metadata("design:type", Date)
+], GqlUser.prototype, "lastLogin", void 0);
 GqlUser = __decorate([
     (0, graphql_2.ObjectType)()
 ], GqlUser);
@@ -50,6 +54,24 @@ let UsersResolver = class UsersResolver {
         this.prisma = prisma;
     }
     async users(skip = 0, take = 10) {
+        try {
+            const existsRows = await this.prisma.$queryRaw `
+        SELECT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE lower(table_name) = 'user' AND lower(column_name) = 'lastlogin'
+        ) AS exists`;
+            const hasLastLogin = Array.isArray(existsRows) ? Boolean(existsRows[0]?.exists) : false;
+            if (hasLastLogin) {
+                return this.prisma.user.findMany({
+                    skip,
+                    take,
+                    orderBy: { createdAt: 'desc' },
+                    select: { id: true, email: true, name: true, image: true, role: true, createdAt: true, lastLogin: true },
+                });
+            }
+        }
+        catch {
+        }
         return this.prisma.user.findMany({
             skip,
             take,
@@ -61,6 +83,22 @@ let UsersResolver = class UsersResolver {
         return this.prisma.user.count();
     }
     async updateUserRole(userId, role) {
+        try {
+            const existsRows = await this.prisma.$queryRaw `
+        SELECT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE lower(table_name) = 'user' AND lower(column_name) = 'lastlogin'
+        ) AS exists`;
+            const hasLastLogin = Array.isArray(existsRows) ? Boolean(existsRows[0]?.exists) : false;
+            if (hasLastLogin) {
+                return this.prisma.user.update({
+                    where: { id: userId },
+                    data: { role: role },
+                    select: { id: true, email: true, name: true, image: true, role: true, createdAt: true, lastLogin: true },
+                });
+            }
+        }
+        catch { }
         return this.prisma.user.update({
             where: { id: userId },
             data: { role: role },

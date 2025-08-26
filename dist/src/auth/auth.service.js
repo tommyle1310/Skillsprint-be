@@ -34,6 +34,11 @@ let AuthService = class AuthService {
     }
     async login(user) {
         const payload = { email: user.email, sub: user.id };
+        try {
+            await this.prisma.$executeRawUnsafe(`UPDATE "User" SET "lastLogin" = NOW() WHERE "id" = $1`, user.id);
+        }
+        catch {
+        }
         return {
             access_token: this.jwtService.sign(payload),
             user: {

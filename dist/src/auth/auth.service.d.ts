@@ -13,6 +13,7 @@ export declare class AuthService {
         avatar: string | null;
         role: import(".prisma/client").$Enums.Role;
         createdAt: Date;
+        lastLogin: Date | null;
     }>;
     login(user: any): Promise<{
         access_token: string;

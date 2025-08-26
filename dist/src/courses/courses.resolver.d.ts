@@ -4,119 +4,121 @@ export declare class CoursesResolver {
     private prisma;
     constructor(prisma: PrismaService);
     courses(): Promise<({
-        lessons: {
-            id: string;
-            title: string;
-            avatar: string | null;
-            order: number;
-            courseId: string;
-            videoUrl: string | null;
-            visible: boolean;
-        }[];
-        quizzes: {
-            id: string;
-            title: string;
-            avatar: string | null;
-            order: number;
-            courseId: string;
-            visible: boolean;
-            questions: import("@prisma/client/runtime/library").JsonValue;
-        }[];
         orders: {
             id: string;
             createdAt: Date;
             courseId: string;
-            userId: string | null;
             amount: number;
             status: string;
+            userId: string | null;
+        }[];
+        lessons: {
+            id: string;
+            avatar: string | null;
+            title: string;
+            order: number;
+            videoUrl: string | null;
+            visible: boolean;
+            courseId: string;
+        }[];
+        quizzes: {
+            id: string;
+            avatar: string | null;
+            title: string;
+            order: number;
+            visible: boolean;
+            courseId: string;
+            questions: import("@prisma/client/runtime/library").JsonValue;
         }[];
         createdBy: {
             id: string;
-            avatar: string | null;
-            createdAt: Date;
-            name: string | null;
             email: string;
             emailVerified: Date | null;
             password: string | null;
+            name: string | null;
             image: string | null;
+            avatar: string | null;
             role: import(".prisma/client").$Enums.Role;
+            createdAt: Date;
+            lastLogin: Date | null;
         };
     } & {
         id: string;
+        avatar: string | null;
+        createdAt: Date;
         title: string;
         slug: string;
-        avatar: string | null;
         description: string;
         price: number;
         categories: string[];
         purchaseCount: number;
         rating: number;
-        createdAt: Date;
         createdById: string | null;
     })[]>;
     course(slug: string): Promise<{
         lessons: {
             id: string;
-            title: string;
             avatar: string | null;
+            title: string;
             order: number;
-            courseId: string;
             videoUrl: string | null;
             visible: boolean;
+            courseId: string;
         }[];
         quizzes: {
             id: string;
-            title: string;
             avatar: string | null;
+            title: string;
             order: number;
-            courseId: string;
             visible: boolean;
+            courseId: string;
             questions: import("@prisma/client/runtime/library").JsonValue;
         }[];
         createdBy: {
             id: string;
-            avatar: string | null;
-            createdAt: Date;
-            name: string | null;
             email: string;
             emailVerified: Date | null;
             password: string | null;
+            name: string | null;
             image: string | null;
+            avatar: string | null;
             role: import(".prisma/client").$Enums.Role;
+            createdAt: Date;
+            lastLogin: Date | null;
         };
     } & {
         id: string;
+        avatar: string | null;
+        createdAt: Date;
         title: string;
         slug: string;
-        avatar: string | null;
         description: string;
         price: number;
         categories: string[];
         purchaseCount: number;
         rating: number;
-        createdAt: Date;
         createdById: string | null;
     }>;
     createCourse(title: string, description: string, price: number, slug: string, createdById: string, avatar?: string): Promise<{
         id: string;
+        avatar: string | null;
+        createdAt: Date;
         title: string;
         slug: string;
-        avatar: string | null;
         description: string;
         price: number;
         categories: string[];
         purchaseCount: number;
         rating: number;
-        createdAt: Date;
         createdById: string | null;
     }>;
     lessons(course: Course): Promise<{
         id: string;
-        title: string;
         avatar: string | null;
+        title: string;
         order: number;
-        courseId: string;
         videoUrl: string | null;
         visible: boolean;
+        courseId: string;
     }[]>;
 }
