@@ -22,6 +22,14 @@ export declare class CoursesResolver {
             visible: boolean;
             questions: import("@prisma/client/runtime/library").JsonValue;
         }[];
+        orders: {
+            id: string;
+            createdAt: Date;
+            courseId: string;
+            userId: string | null;
+            amount: number;
+            status: string;
+        }[];
         createdBy: {
             id: string;
             avatar: string | null;

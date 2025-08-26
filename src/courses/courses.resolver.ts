@@ -18,6 +18,7 @@ export class CoursesResolver {
           orderBy: { order: 'asc' }
         },
         createdBy: true,
+        orders: true,
       }
     });
   }

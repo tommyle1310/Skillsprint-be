@@ -4,24 +4,24 @@ export declare class PromotionsResolver {
     constructor(prisma: PrismaService);
     promotions(): Promise<{
         id: string;
+        courseId: string | null;
         code: string;
         discountPercentage: number;
         expiresAt: Date;
-        courseId: string | null;
     }[]>;
     createPromotion(code: string, discountPercentage: number, expiresAt: string): Promise<{
         id: string;
+        courseId: string | null;
         code: string;
         discountPercentage: number;
         expiresAt: Date;
-        courseId: string | null;
     }>;
     updatePromotion(id: string, code?: string, discountPercentage?: number, expiresAt?: string): Promise<{
         id: string;
+        courseId: string | null;
         code: string;
         discountPercentage: number;
         expiresAt: Date;
-        courseId: string | null;
     }>;
     deletePromotion(id: string): Promise<boolean>;
 }

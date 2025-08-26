@@ -5,6 +5,7 @@ export declare class Course {
     avatar?: string;
     description: string;
     price: number;
+    purchaseCount: number;
     createdAt: Date;
     createdById?: string;
     lessons?: Lesson[];

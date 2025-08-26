@@ -68,6 +68,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   createdCourses Course[]  @relation("CourseCreatedBy")
+  transactions  Transaction[]
 }
 
 model Course {
@@ -86,6 +87,7 @@ model Course {
   promotions      Promotion[]
   createdAt       DateTime    @default(now())
   orders          Order[]
+  transactions    Transaction[]
   createdBy       User?       @relation("CourseCreatedBy", fields: [createdById], references: [id])
   createdById     String?
 }
@@ -172,6 +174,18 @@ model Order {
   courseId  String
   amount    Int
   status    String   // "pending"|"paid"|"failed"
+  createdAt DateTime @default(now())
+}
+
+model Transaction {
+  id        String   @id @default(cuid())
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  String
+  amount    Int
+  provider  String   // "stripe"|"paypal"|"napas"|"momo"
+  status    String   // "success"|"failed"
   createdAt DateTime @default(now())
 }
 

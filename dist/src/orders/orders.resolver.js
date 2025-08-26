@@ -15,13 +15,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrdersResolver = void 0;
 const graphql_1 = require("@nestjs/graphql");
 const prisma_service_1 = require("../prisma/prisma.service");
+let GqlOrder = class GqlOrder {
+};
+__decorate([
+    (0, graphql_1.Field)(),
+    __metadata("design:type", String)
+], GqlOrder.prototype, "id", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => graphql_1.Int),
+    __metadata("design:type", Number)
+], GqlOrder.prototype, "amount", void 0);
+__decorate([
+    (0, graphql_1.Field)(),
+    __metadata("design:type", String)
+], GqlOrder.prototype, "status", void 0);
+__decorate([
+    (0, graphql_1.Field)(),
+    __metadata("design:type", Date)
+], GqlOrder.prototype, "createdAt", void 0);
+GqlOrder = __decorate([
+    (0, graphql_1.ObjectType)()
+], GqlOrder);
 let OrdersResolver = class OrdersResolver {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async createOrder(userId, courseId, amount) {
-        const order = await this.prisma.order.create({ data: { userId, courseId, amount, status: 'paid' } });
-        return order.id;
+    async createOrder(courseId, amount, status, userId) {
+        const order = await this.prisma.order.create({ data: { userId, courseId, amount, status: status ?? 'paid' } });
+        return order;
     }
     async hasPurchased(userId, courseId) {
         const count = await this.prisma.order.count({ where: { userId, courseId, status: 'paid' } });
@@ -30,12 +51,13 @@ let OrdersResolver = class OrdersResolver {
 };
 exports.OrdersResolver = OrdersResolver;
 __decorate([
-    (0, graphql_1.Mutation)(() => String),
-    __param(0, (0, graphql_1.Args)('userId')),
-    __param(1, (0, graphql_1.Args)('courseId')),
-    __param(2, (0, graphql_1.Args)('amount', { type: () => graphql_1.Int })),
+    (0, graphql_1.Mutation)(() => GqlOrder),
+    __param(0, (0, graphql_1.Args)('courseId')),
+    __param(1, (0, graphql_1.Args)('amount', { type: () => graphql_1.Int })),
+    __param(2, (0, graphql_1.Args)('status', { nullable: true })),
+    __param(3, (0, graphql_1.Args)('userId', { nullable: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, Number]),
+    __metadata("design:paramtypes", [String, Number, String, String]),
     __metadata("design:returntype", Promise)
 ], OrdersResolver.prototype, "createOrder", null);
 __decorate([
@@ -47,7 +69,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], OrdersResolver.prototype, "hasPurchased", null);
 exports.OrdersResolver = OrdersResolver = __decorate([
-    (0, graphql_1.Resolver)(),
+    (0, graphql_1.Resolver)(() => GqlOrder),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService])
 ], OrdersResolver);
 //# sourceMappingURL=orders.resolver.js.map

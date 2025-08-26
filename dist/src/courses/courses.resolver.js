@@ -31,6 +31,7 @@ let CoursesResolver = class CoursesResolver {
                     orderBy: { order: 'asc' }
                 },
                 createdBy: true,
+                orders: true,
             }
         });
     }

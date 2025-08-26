@@ -20,6 +20,9 @@ export class Course {
   @Field(() => Int)
   price: number;
 
+  @Field(() => Int)
+  purchaseCount: number;
+
   @Field()
   createdAt: Date;
 
