@@ -1,7 +1,8 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { PrismaService } from '../prisma/prisma.service';
-import { AdminOverview, AdminOverviewPeriodType, DashboardStats, Traffic } from './analytics.types';
+import { AdminGaPanel, AdminOverview, AdminOverviewPeriodType, DashboardStats, Traffic, GAComprehensiveOverview } from './analytics.types';
 import { GoogleAnalyticsService } from './google-analytics.service';
+import { Int } from '@nestjs/graphql';
 
 @Resolver(() => DashboardStats)
 export class AnalyticsResolver {
@@ -194,6 +195,127 @@ export class AnalyticsResolver {
       gaActiveUsers,
       gaSessions,
       gaBounceRate,
+    };
+  }
+
+  /** Comprehensive Analytics Overview - Enhanced GA + DB metrics */
+  @Query(() => GAComprehensiveOverview)
+  async comprehensiveAnalytics(
+    @Args('days', { type: () => Int, nullable: true, defaultValue: 7 })
+    days: number = 7,
+  ): Promise<GAComprehensiveOverview> {
+    try {
+      // Get comprehensive analytics overview from GA service
+      const analyticsOverview = await this.ga.getAnalyticsOverview(days);
+      
+      // Get additional DB metrics for comparison
+      const [dbTraffic, dbLeads, dbUsers, dbOrders, dbRevenue] = await Promise.all([
+        this.prisma.traffic.findFirst(),
+        this.prisma.lead.count(),
+        this.prisma.user.count(),
+        this.prisma.order.count(),
+        this.prisma.order.aggregate({
+          where: { status: 'paid' },
+          _sum: { amount: true }
+        })
+      ]);
+
+      return {
+        summary: analyticsOverview.summary,
+        ctaClicks: analyticsOverview.ctaClicks,
+        scrollBuckets: analyticsOverview.scrollBuckets,
+        newReturning: analyticsOverview.newReturning,
+        topPages: analyticsOverview.topPages,
+        acquisition: analyticsOverview.acquisition,
+        devices: analyticsOverview.devices,
+        countries: analyticsOverview.countries,
+        averageScrollPercentage: analyticsOverview.averageScrollPercentage,
+        overallCtr: analyticsOverview.overallCtr,
+        formSubmissions: analyticsOverview.formSubmissions,
+        hoverEvents: analyticsOverview.hoverEvents,
+      };
+    } catch (error) {
+      console.error('Error fetching comprehensive analytics:', error);
+      // Return default values if GA is not connected
+      return {
+        summary: {
+          pageViews: 0,
+          sessions: 0,
+          activeUsers: 0,
+          avgSessionDurationSec: 0,
+          engagementDurationSec: 0,
+          bounceRate: 0,
+        },
+        ctaClicks: { register: 0, login: 0, courses: 0, pricing: 0 },
+        scrollBuckets: { s25: 0, s50: 0, s75: 0, s90: 0, s100: 0 },
+        newReturning: { newUsers: 0, returningUsers: 0 },
+        topPages: [],
+        acquisition: [],
+        devices: [],
+        countries: [],
+        averageScrollPercentage: 0,
+        overallCtr: 0,
+        formSubmissions: 0,
+        hoverEvents: 0,
+      };
+    }
+  }
+
+  @Query(() => AdminGaPanel)
+  async adminGaPanel(): Promise<AdminGaPanel> {
+    const [
+      summary,
+      pageSeries,
+      cta,
+      scroll,
+      topPages,
+      acq,
+      newRet,
+      regSeries,
+      loginSeries,
+      coursesSeries,
+      pricingSeries,
+      devices,
+      countries,
+    ] = await Promise.all([
+      this.ga.getSummary7d(),
+      this.ga.getPageViewsTimeseries(7),
+      this.ga.getCtaClicksBundle(7),
+      this.ga.getScrollBuckets(7),
+      this.ga.getTopPages(10, 7),
+      this.ga.getAcquisition(7, 10),
+      this.ga.getNewVsReturning(7),
+      this.ga.getEventTimeseries('click_register', 7),
+      this.ga.getEventTimeseries('click_login', 7),
+      this.ga.getEventTimeseries('click_courses', 7),
+      this.ga.getEventTimeseries('click_pricing', 7),
+      this.ga.getDevices(7),
+      this.ga.getCountries(7, 10),
+    ]);
+
+    return {
+      pageViews7d: summary.pageViews,
+      sessions7d: summary.sessions,
+      activeUsers7d: summary.activeUsers,
+      avgSessionDurationSec7d: Math.round(summary.avgSessionDurationSec),
+      engagementDurationSec7d: Math.round(summary.engagementDurationSec),
+      bounceRate7d: summary.bounceRate,
+
+      pageViewsSeries7d: pageSeries,
+      ctaClicks7d: cta,
+      scroll7d: scroll,
+
+      topPages7d: topPages,
+      acquisition7d: acq,
+      newReturning7d: newRet,
+
+      registerSeries7d: regSeries,
+      loginSeries7d: loginSeries,
+      coursesSeries7d: coursesSeries,
+      pricingSeries7d: pricingSeries,
+
+      devices7d: devices?.map(d => ({ date: d.device, count: d.sessions })) ?? [],
+      countries7d: countries?.map(c => ({ date: c.country, count: c.sessions })) ?? [],
     };
   }
 

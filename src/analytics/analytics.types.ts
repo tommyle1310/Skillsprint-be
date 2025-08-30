@@ -181,3 +181,159 @@ export class AdminOverview {
   @Field({ nullable: true })
   gaBounceRate?: number;
 }
+
+// ===== ENHANCED ANALYTICS TYPES =====
+
+@ObjectType()
+export class GATimePoint {
+  @Field() date: string;     // YYYYMMDD
+  @Field(() => Int) pageViews?: number;
+  @Field(() => Int) sessions?: number;
+  @Field(() => Int) count?: number; // cho event
+}
+
+@ObjectType()
+export class GAEventCounts {
+  @Field(() => Int) register: number;
+  @Field(() => Int) login: number;
+  @Field(() => Int) courses: number;
+  @Field(() => Int) pricing: number;
+}
+
+@ObjectType()
+export class GAScrollBuckets {
+  @Field(() => Int) s25: number;
+  @Field(() => Int) s50: number;
+  @Field(() => Int) s75: number;
+  @Field(() => Int) s90: number;
+  @Field(() => Int) s100: number;
+}
+
+@ObjectType()
+export class GATopPage {
+  @Field() path: string;
+  @Field({ nullable: true }) title?: string;
+  @Field(() => Int) pageViews: number;
+  @Field(() => Int) avgSessionDurationSec: number;
+  @Field() bounceRate: number;
+}
+
+@ObjectType()
+export class GAAcquisitionRow {
+  @Field() source: string;
+  @Field() medium: string;
+  @Field() channelGroup: string;
+  @Field(() => Int) sessions: number;
+  @Field(() => Int) activeUsers: number;
+  @Field(() => Int) engagedSessions: number;
+  @Field() bounceRate: number;
+}
+
+@ObjectType()
+export class GANewReturning {
+  @Field(() => Int) newUsers: number;
+  @Field(() => Int) returningUsers: number;
+}
+
+@ObjectType()
+export class GATrafficSource {
+  @Field() source: string;
+  @Field() medium: string;
+  @Field(() => Int) sessions: number;
+}
+
+@ObjectType()
+export class GADevice {
+  @Field() device: string;
+  @Field(() => Int) sessions: number;
+}
+
+@ObjectType()
+export class GABrowser {
+  @Field() browser: string;
+  @Field(() => Int) sessions: number;
+}
+
+@ObjectType()
+export class GACountry {
+  @Field() country: string;
+  @Field(() => Int) sessions: number;
+}
+
+@ObjectType()
+export class GACity {
+  @Field() city: string;
+  @Field(() => Int) sessions: number;
+}
+
+@ObjectType()
+export class GANavigationFlow {
+  @Field(() => [GATopPage]) entryPages: GATopPage[];
+  @Field(() => [GATopPage]) exitPages: GATopPage[];
+}
+
+@ObjectType()
+export class GAFormSubmission {
+  @Field() formType: string;
+  @Field(() => Int) count: number;
+}
+
+@ObjectType()
+export class GAHoverEvent {
+  @Field() elementId: string;
+  @Field(() => Int) count: number;
+}
+
+@ObjectType()
+export class GASummary {
+  @Field(() => Int) pageViews: number;
+  @Field(() => Int) sessions: number;
+  @Field(() => Int) activeUsers: number;
+  @Field(() => Int) avgSessionDurationSec: number;
+  @Field(() => Int) engagementDurationSec: number;
+  @Field() bounceRate: number;
+}
+
+@ObjectType()
+export class GAComprehensiveOverview {
+  @Field(() => GASummary) summary: GASummary;
+  @Field(() => GAEventCounts) ctaClicks: GAEventCounts;
+  @Field(() => GAScrollBuckets) scrollBuckets: GAScrollBuckets;
+  @Field(() => GANewReturning) newReturning: GANewReturning;
+  @Field(() => [GATopPage]) topPages: GATopPage[];
+  @Field(() => [GAAcquisitionRow]) acquisition: GAAcquisitionRow[];
+  @Field(() => [GADevice]) devices: GADevice[];
+  @Field(() => [GACountry]) countries: GACountry[];
+  @Field() averageScrollPercentage: number;
+  @Field() overallCtr: number;
+  @Field(() => Int) formSubmissions: number;
+  @Field(() => Int) hoverEvents: number;
+}
+
+
+
+@ObjectType()
+export class AdminGaPanel {
+  @Field(() => Int) pageViews7d: number;
+  @Field(() => Int) sessions7d: number;
+  @Field(() => Int) activeUsers7d: number;
+  @Field(() => Int) avgSessionDurationSec7d: number;
+  @Field(() => Int) engagementDurationSec7d: number;
+  @Field() bounceRate7d: number;
+
+  @Field(() => [GATimePoint]) pageViewsSeries7d: GATimePoint[];
+  @Field(() => GAEventCounts) ctaClicks7d: GAEventCounts;
+  @Field(() => GAScrollBuckets) scroll7d: GAScrollBuckets;
+
+  @Field(() => [GATopPage]) topPages7d: GATopPage[];
+  @Field(() => [GAAcquisitionRow]) acquisition7d: GAAcquisitionRow[];
+  @Field(() => GANewReturning) newReturning7d: GANewReturning;
+
+  @Field(() => [GATimePoint]) registerSeries7d: GATimePoint[];
+  @Field(() => [GATimePoint]) loginSeries7d: GATimePoint[];
+  @Field(() => [GATimePoint]) coursesSeries7d: GATimePoint[];
+  @Field(() => [GATimePoint]) pricingSeries7d: GATimePoint[];
+
+  @Field(() => [GATimePoint], { nullable: true }) devices7d?: any;
+  @Field(() => [GATimePoint], { nullable: true }) countries7d?: any;
+}
