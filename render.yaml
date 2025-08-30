@@ -4,7 +4,7 @@ services:
     env: node
     nodeVersion: 20
     buildCommand: npm ci && npm run build
-    startCommand: npm run start:render
+    startCommand: node --max-old-space-size=6144 dist/main
     envVars:
       - key: NODE_ENV
         value: production
@@ -15,5 +15,5 @@ services:
       - key: FRONTEND_URL
         sync: false
       - key: NODE_OPTIONS
-        value: "--max-old-space-size=4096"
+        value: "--max-old-space-size=6144"
     healthCheckPath: /health

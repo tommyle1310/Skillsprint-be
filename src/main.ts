@@ -7,12 +7,16 @@ async function bootstrap() {
     logger: process.env.NODE_ENV === 'production' ? ['error', 'warn'] : ['log', 'debug', 'error', 'warn'],
     // Disable body parser for GraphQL to reduce memory usage
     bodyParser: false,
+    // Additional memory optimizations
+    cors: false, // We'll enable it manually with specific options
   });
   
-  // Enable CORS for frontend
+  // Enable CORS for frontend with minimal options
   app.enableCors({
     origin: process.env.FRONTEND_URL || 'http://localhost:3000',
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
   const port = process.env.PORT || 4000;
