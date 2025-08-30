@@ -2,8 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  // Optimize for production memory usage
   const app = await NestFactory.create(AppModule, {
     logger: process.env.NODE_ENV === 'production' ? ['error', 'warn'] : ['log', 'debug', 'error', 'warn'],
+    // Disable body parser for GraphQL to reduce memory usage
+    bodyParser: false,
   });
   
   // Enable CORS for frontend

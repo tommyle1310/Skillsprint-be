@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, Controller, Get } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ConfigModule } from '@nestjs/config';
@@ -16,6 +16,14 @@ import { InquiriesModule } from './inquiries/inquiries.module';
 import { PromotionsModule } from './promotions/promotions.module';
 import { TransactionsModule } from './transactions/transactions.module';
 
+@Controller()
+export class AppController {
+  @Get('/health')
+  getHealth() {
+    return { status: 'ok', timestamp: new Date().toISOString() };
+  }
+}
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -29,6 +37,14 @@ import { TransactionsModule } from './transactions/transactions.module';
       context: ({ req }) => ({ req }),
       cache: 'bounded',
       csrfPrevention: true,
+      // Production optimizations
+      ...(process.env.NODE_ENV === 'production' && {
+        formatError: (error) => ({
+          message: error.message,
+          ...(process.env.NODE_ENV !== 'production' && { stack: (error as any).stack }),
+        }),
+        plugins: [],
+      }),
     }),
     PrismaModule,
     AuthModule,
@@ -44,5 +60,6 @@ import { TransactionsModule } from './transactions/transactions.module';
     PromotionsModule,
     TransactionsModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
