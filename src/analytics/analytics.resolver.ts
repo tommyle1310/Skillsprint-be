@@ -297,9 +297,9 @@ export class AnalyticsResolver {
       pageViews7d: summary.pageViews,
       sessions7d: summary.sessions,
       activeUsers7d: summary.activeUsers,
-      avgSessionDurationSec7d: Math.round(summary.avgSessionDurationSec),
-      engagementDurationSec7d: Math.round(summary.engagementDurationSec),
-      bounceRate7d: summary.bounceRate,
+      avgSessionDurationSec7d: summary.avgSessionDurationSec, // Keep float precision
+      engagementDurationSec7d: summary.engagementDurationSec, // Keep float precision
+      bounceRate7d: summary.bounceRate, // Keep float precision
 
       pageViewsSeries7d: pageSeries,
       ctaClicks7d: cta,

@@ -298,12 +298,18 @@ export class GoogleAnalyticsService {
   async getFormSubmissionsByType() {
     const res = await this.runReport(
       [{ name: 'eventCount' }],
-      [{ name: 'eventName' }, { name: 'customEvent:form_type' }]
+      [{ name: 'eventName' }]
     );
-    return res?.rows?.map(r => ({
-      formType: r.dimensionValues?.[1]?.value || 'unknown',
+    
+    // Filter for form submission events and group by event name
+    const formEvents = res?.rows?.filter(r => 
+      r.dimensionValues?.[0]?.value?.includes('form_submit')
+    ) || [];
+    
+    return formEvents.map(r => ({
+      formType: r.dimensionValues?.[0]?.value || 'unknown',
       count: Number(r.metricValues?.[0]?.value || 0),
-    })) || [];
+    }));
   }
 
   // ===== HOVER EVENTS =====
@@ -322,12 +328,18 @@ export class GoogleAnalyticsService {
   async getHoverEventsByElement() {
     const res = await this.runReport(
       [{ name: 'eventCount' }],
-      [{ name: 'eventName' }, { name: 'customEvent:element_id' }]
+      [{ name: 'eventName' }]
     );
-    return res?.rows?.map(r => ({
-      elementId: r.dimensionValues?.[1]?.value || 'unknown',
+    
+    // Filter for hover events and group by event name
+    const hoverEvents = res?.rows?.filter(r => 
+      r.dimensionValues?.[0]?.value?.includes('hover')
+    ) || [];
+    
+    return hoverEvents.map(r => ({
+      elementId: r.dimensionValues?.[0]?.value || 'unknown',
       count: Number(r.metricValues?.[0]?.value || 0),
-    })) || [];
+    }));
   }
 
   // ===== ACQUISITION & CHANNELS =====
@@ -462,7 +474,7 @@ export class GoogleAnalyticsService {
         { name: 'sessions' },
         { name: 'activeUsers' },
         { name: 'averageSessionDuration' },
-        { name: 'engagementTime' },
+        { name: 'userEngagementDuration' },
         { name: 'bounceRate' },
       ],
     );

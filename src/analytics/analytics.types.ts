@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID, Int, registerEnumType } from '@nestjs/graphql';
+import { ObjectType, Field, ID, Int, Float, registerEnumType } from '@nestjs/graphql';
 
 @ObjectType()
 export class DashboardStats {
@@ -214,8 +214,8 @@ export class GATopPage {
   @Field() path: string;
   @Field({ nullable: true }) title?: string;
   @Field(() => Int) pageViews: number;
-  @Field(() => Int) avgSessionDurationSec: number;
-  @Field() bounceRate: number;
+  @Field(() => Float) avgSessionDurationSec: number;
+  @Field(() => Float) bounceRate: number;
 }
 
 @ObjectType()
@@ -226,7 +226,7 @@ export class GAAcquisitionRow {
   @Field(() => Int) sessions: number;
   @Field(() => Int) activeUsers: number;
   @Field(() => Int) engagedSessions: number;
-  @Field() bounceRate: number;
+  @Field(() => Float) bounceRate: number;
 }
 
 @ObjectType()
@@ -289,9 +289,9 @@ export class GASummary {
   @Field(() => Int) pageViews: number;
   @Field(() => Int) sessions: number;
   @Field(() => Int) activeUsers: number;
-  @Field(() => Int) avgSessionDurationSec: number;
-  @Field(() => Int) engagementDurationSec: number;
-  @Field() bounceRate: number;
+  @Field(() => Float) avgSessionDurationSec: number;
+  @Field(() => Float) engagementDurationSec: number;
+  @Field(() => Float) bounceRate: number;
 }
 
 @ObjectType()
@@ -304,8 +304,8 @@ export class GAComprehensiveOverview {
   @Field(() => [GAAcquisitionRow]) acquisition: GAAcquisitionRow[];
   @Field(() => [GADevice]) devices: GADevice[];
   @Field(() => [GACountry]) countries: GACountry[];
-  @Field() averageScrollPercentage: number;
-  @Field() overallCtr: number;
+  @Field(() => Float) averageScrollPercentage: number;
+  @Field(() => Float) overallCtr: number;
   @Field(() => Int) formSubmissions: number;
   @Field(() => Int) hoverEvents: number;
 }
@@ -317,9 +317,9 @@ export class AdminGaPanel {
   @Field(() => Int) pageViews7d: number;
   @Field(() => Int) sessions7d: number;
   @Field(() => Int) activeUsers7d: number;
-  @Field(() => Int) avgSessionDurationSec7d: number;
-  @Field(() => Int) engagementDurationSec7d: number;
-  @Field() bounceRate7d: number;
+  @Field(() => Float) avgSessionDurationSec7d: number;
+  @Field(() => Float) engagementDurationSec7d: number;
+  @Field(() => Float) bounceRate7d: number;
 
   @Field(() => [GATimePoint]) pageViewsSeries7d: GATimePoint[];
   @Field(() => GAEventCounts) ctaClicks7d: GAEventCounts;
