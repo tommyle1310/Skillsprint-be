@@ -2,7 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: process.env.NODE_ENV === 'production' ? ['error', 'warn'] : ['log', 'debug', 'error', 'warn'],
+  });
   
   // Enable CORS for frontend
   app.enableCors({
@@ -11,10 +13,12 @@ async function bootstrap() {
   });
 
   const port = process.env.PORT || 4000;
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
   
   console.log(`🚀 SkillSprint Backend running on port ${port}`);
-  console.log(`📊 GraphQL Playground: http://localhost:${port}/graphql`);
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`📊 GraphQL Playground: http://localhost:${port}/graphql`);
+  }
 }
 
 bootstrap();

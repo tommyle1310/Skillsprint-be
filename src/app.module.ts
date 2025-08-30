@@ -24,9 +24,11 @@ import { TransactionsModule } from './transactions/transactions.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
-      playground: true,
-      introspection: true,
+      playground: process.env.NODE_ENV !== 'production',
+      introspection: process.env.NODE_ENV !== 'production',
       context: ({ req }) => ({ req }),
+      cache: 'bounded',
+      csrfPrevention: true,
     }),
     PrismaModule,
     AuthModule,
