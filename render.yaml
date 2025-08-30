@@ -2,7 +2,7 @@ services:
   - type: web
     name: skillsprint-backend
     env: node
-    nodeVersion: 18
+    nodeVersion: 20
     buildCommand: npm ci && npm run build
     startCommand: npm run start:render
     envVars:
